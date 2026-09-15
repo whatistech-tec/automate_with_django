@@ -6,8 +6,6 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 
 # Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/6.1/howto/deployment/checklist/
-
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-ttt&ie$b#)w4ccyc(i7%eria#z!5(%kq-@u#ti%%s0gvx9o@00'
 
@@ -28,6 +26,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     
     'dataentry',
+    'uploads',
 ]
 
 MIDDLEWARE = [
@@ -45,7 +44,7 @@ ROOT_URLCONF = 'awd_main.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': ['templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -109,10 +108,19 @@ STATIC_URL = 'static/'
 
 
 # Email
-# https://docs.djangoproject.com/en/6.1/topics/email/#topic-email-configuration
 
 MAILERS = {
     'default': {
         'BACKEND': 'django.core.mail.backends.console.EmailBackend',
     },
+}
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR /'media/'
+
+from django.contrib.messages import constants as messages
+
+MESSAGE_TAGS = {
+    messages.ERROR: "danger",
+    50: "critical",
 }
