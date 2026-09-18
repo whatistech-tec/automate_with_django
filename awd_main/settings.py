@@ -1,16 +1,14 @@
 
 from pathlib import Path
+from decouple import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
-# Quick-start development settings - unsuitable for production
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-ttt&ie$b#)w4ccyc(i7%eria#z!5(%kq-@u#ti%%s0gvx9o@00'
+SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = config('DEBUG', default=False, cast=bool)
 
 ALLOWED_HOSTS = []
 
@@ -60,7 +58,6 @@ WSGI_APPLICATION = 'awd_main.wsgi.application'
 
 
 # Database
-# https://docs.djangoproject.com/en/6.1/ref/settings/#databases
 
 DATABASES = {
     'default': {
@@ -71,7 +68,6 @@ DATABASES = {
 
 
 # Password validation
-# https://docs.djangoproject.com/en/6.1/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -90,7 +86,6 @@ AUTH_PASSWORD_VALIDATORS = [
 
 
 # Internationalization
-# https://docs.djangoproject.com/en/6.1/topics/i18n/
 
 LANGUAGE_CODE = 'en-us'
 
@@ -102,18 +97,29 @@ USE_TZ = True
 
 
 # Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/6.1/howto/static-files/
-
 STATIC_URL = 'static/'
+STATIC_ROOT = BASE_DIR /'static'
+STATICFILES_DIRS = [
+    'awd_main/static',
+]
 
-
-# Email
+# Email configuration
 
 MAILERS = {
     'default': {
-        'BACKEND': 'django.core.mail.backends.console.EmailBackend',
+        'BACKEND': 'django.core.mail.backends.smtp.EmailBackend',
+        'OPTIONS': {
+            'host': config('EMAIL_HOST'),
+            'port': config('EMAIL_PORT', cast=int),
+            'username': config('EMAIL_HOST_USER'),
+            'password': config('EMAIL_HOST_PASSWORD'),
+            'use_tls': config('EMAIL_USE_TLS', cast=bool),
+        },
     },
 }
+
+DEFAULT_FROM_EMAIL = 'Automate with Django <anyandarhesbon@gmail.com>'
+DEFAULT_TO_EMAIL = 'nyandaruahesborn5@gmail.com'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR /'media/'
@@ -124,3 +130,6 @@ MESSAGE_TAGS = {
     messages.ERROR: "danger",
     50: "critical",
 }
+
+CELERY_BROKER_URL = 'redis://localhost:6379'
+
