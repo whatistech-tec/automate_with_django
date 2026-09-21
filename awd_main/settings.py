@@ -28,6 +28,7 @@ INSTALLED_APPS = [
     
     'dataentry',
     'uploads',
+    'emails',
 ]
 
 MIDDLEWARE = [
