@@ -10,7 +10,7 @@ SECRET_KEY = config('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG', default=False, cast=bool)
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -25,6 +25,8 @@ INSTALLED_APPS = [
     
     'crispy_forms',
     'crispy_bootstrap5',
+    'ckeditor',
+    'anymail',
     
     'dataentry',
     'uploads',
@@ -107,23 +109,15 @@ STATICFILES_DIRS = [
     'awd_main/static',
 ]
 
-# Email configuration
-
-MAILERS = {
-    'default': {
-        'BACKEND': 'django.core.mail.backends.smtp.EmailBackend',
-        'OPTIONS': {
-            'host': config('EMAIL_HOST'),
-            'port': config('EMAIL_PORT', cast=int),
-            'username': config('EMAIL_HOST_USER'),
-            'password': config('EMAIL_HOST_PASSWORD'),
-            'use_tls': config('EMAIL_USE_TLS', cast=bool),
-        },
-    },
-}
+# EMAIL / BREVO
+EMAIL_BACKEND = 'anymail.backends.brevo.EmailBackend'
 
 DEFAULT_FROM_EMAIL = 'Automate with Django <anyandarhesbon@gmail.com>'
 DEFAULT_TO_EMAIL = 'nyandaruahesborn5@gmail.com'
+
+ANYMAIL = {
+    'BREVO_API_KEY': config('BREVO_API_KEY'),
+}
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR /'media/'
@@ -138,3 +132,12 @@ MESSAGE_TAGS = {
 CELERY_BROKER_URL = 'redis://localhost:6379'
 
 CRISPY_TEMPLATE_PACK = 'bootstrap5'
+
+CKEDITOR_CONFIGS = {
+    'default': {
+        'height': 200,
+    },
+}
+
+CSRF_TRUSTED_ORIGINS = ['https://6bce-102-0-100-170.ngrok-free.app']
+BASE_URL = 'https://6bce-102-0-100-170.ngrok-free.app'
